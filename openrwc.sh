@@ -2,7 +2,7 @@
 DIR="$HOME/OpenRWC"
 mkdir -p "$DIR"
 
-url=$(curl -s 'https://www.reddit.com/r/wallpapers/search.json?limit=1&q=1920x1080&t=hour' | jq -r '.data|.children|.[0]|.data|.url')
+url=$(curl -s 'https://www.reddit.com/r/wallpaper/search.json?limit=1&q=1920x1080&t=hour' | jq -r '.data|.children|.[0]|.data|.url')
 # TODO loop over Subreddits, resolutions and if no wallpaper is found
 if [[ "null" == "$url" ]]; then
     echo "no wp found"
