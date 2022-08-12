@@ -1,6 +1,6 @@
 # OpenRWC
 
-Open Reddit Wallpaper Changer for GNU/Linux
+Reddit Wallpaper Changer for GNU/Linux
 
 ### Requirements
 ```shell
