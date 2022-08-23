@@ -49,7 +49,7 @@ func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort s
 	defer func() { // Handle panic if API responds with unexpected JSON response
 		resp.Body.Close()
 		if err := recover(); err != nil {
-			log.Errorln("Reddit API did not responded with a wallpaper URL")
+			log.Errorln("Reddit API did not respond with a wallpaper URL")
 		}
 	}()
 	url := js.(map[string]interface{})["data"].(map[string]interface{})["children"].([]interface{})[0].(map[string]interface{})["data"].(map[string]interface{})["url"]

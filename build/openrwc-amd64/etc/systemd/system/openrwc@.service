@@ -1,0 +1,15 @@
+[Unit]
+Description=Reddit Wallpaper Changer for GNU/Linux
+Requires=display-manager.service
+After=display-manager.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/openrwc
+Restart=always
+RestartSec=5
+User=%i
+
+[Install]
+WantedBy=graphical.target

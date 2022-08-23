@@ -21,8 +21,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Download image from the given URL and return the downloaded file or error/
-func Download(url string) (string, error) {
+// Download image from the given URL to the specified path and return the downloaded file or error/
+func Download(url string, path string) (string, error) {
 	client := &http.Client{} // create a basic downloader client
 	resp, err := client.Get(url)
 	if nil != err {
@@ -34,10 +34,11 @@ func Download(url string) (string, error) {
 	}
 	defer resp.Body.Close()
 	components := strings.Split(url, "i.redd.it/")
-	filename := components[len(components)-1]
-	stat, err := os.Stat(filename)
+	file := path + "/" + components[len(components)-1]
+	log.Infof("Download path: %s", file)
+	stat, err := os.Stat(file)
 	if errors.Is(err, os.ErrNotExist) {
-		if strings.HasSuffix(filename, ".png") || strings.HasSuffix(filename, ".jpg") || strings.HasSuffix(filename, ".jpeg") {
+		if strings.HasSuffix(file, ".png") || strings.HasSuffix(file, ".jpg") || strings.HasSuffix(file, ".jpeg") {
 			// This means attempt to download the wallpaper
 		} else {
 			return "", err
@@ -45,18 +46,18 @@ func Download(url string) (string, error) {
 	}
 	if nil != stat && stat.Size() > 0 {
 		// do not return a wallpaper previousely set
-		return "", errors.New("Wallpaper exists: " + filename)
+		return "", errors.New("Wallpaper exists: " + file)
 	}
-	file, err := os.Create(filename)
+	newFile, err := os.Create(file)
 	if err != nil {
 		return "", err
 	}
 
-	defer file.Close()
+	defer newFile.Close()
 	//Write the bytes to the file
-	_, err = io.Copy(file, resp.Body)
+	_, err = io.Copy(newFile, resp.Body)
 	if err != nil {
 		return "", err
 	}
-	return file.Name(), nil
+	return newFile.Name(), nil
 }

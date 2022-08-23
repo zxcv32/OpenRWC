@@ -55,9 +55,10 @@ func TimedChanger() {
 
 // Fetch and set wallpaper
 func Change() (bool, *NoWallpaperError) {
-	LoadConfig() // refresh config every time
+	path := LoadConfig() // Load config
 	for _, subreddit := range getSubreddits() {
 		for _, resolution := range getResolutions() {
+			path = LoadConfig() // refresh config every time
 			searchQuery := strings.Trim(strings.Join([]string{resolution, getQuery()}, " "), " ")
 			url, err := reddit.GetWallpaperUrl(TheClientShallIhave(), subreddit, searchQuery, getSort())
 			if nil != err {
@@ -73,15 +74,22 @@ func Change() (bool, *NoWallpaperError) {
 				continue
 			}
 			log.Infof("subreddit: %s | %s", subreddit, url)
-			wallpaper, err := downloader.Download(url)
+			log.Infof("config dir: %s", path)
+			wallpaper, err := downloader.Download(url, path)
 			if nil != err {
 				log.Errorln(err.Error())
 				// Just wait for next iteration if no wallpaper was set
 				time.Sleep(getRetryDelay())
 				continue
 			}
-			log.Printf("file: %s", wallpaper)
-			NitrogenChange(wallpaper)
+			log.Infof("wallpaper to set: %s", wallpaper)
+			nitrogenError := NitrogenChange(wallpaper)
+			if nil != nitrogenError {
+				log.Errorf("nitrogen error: %s", nitrogenError.Error())
+				// Just wait for next iteration if no wallpaper was set
+				time.Sleep(getRetryDelay())
+				continue
+			}
 			return true, nil
 		}
 	}
@@ -92,7 +100,7 @@ func Change() (bool, *NoWallpaperError) {
 func getSubreddits() []string {
 	subreddits := viper.GetStringSlice("reddit.subreddits")
 	if nil == subreddits || len(subreddits) < 1 {
-		log.Fatalln("Atleast on subreddit is required")
+		log.Fatalln("At least on subreddit is required")
 	}
 	return subreddits
 }
