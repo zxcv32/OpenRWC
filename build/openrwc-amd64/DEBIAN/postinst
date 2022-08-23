@@ -1,0 +1,14 @@
+#!/bin/env bash
+systemctl daemon-reload
+echo "
+OpenRWC Installed 🧞
+
+Run the following commands to begin
+"
+
+echo -e "\tsudo systemctl enable openrwc@\044USER.service"
+echo -e "\tsudo systemctl start openrwc@\044USER.service"
+
+echo "
+Configuration file will be created here: ~/.config/OpenRWC/config.toml
+"

@@ -1,0 +1,33 @@
+title = "OpenRWC Configuration"
+version = "0.0.1"
+
+[reddit]
+subreddits = ["wallpaper", "wallpapers", "Animewallpaper", "AnimeWallpapersSFW", "MinimalWallpaper"]
+# one of (hour, day, week, month, year, all)
+sort = "week"
+# custom query in addition to openrwc.resolution
+query = ""
+
+[openrwc]
+# Wallpapert resulutions to search for
+# The wallpaper resolution may not always need to match your display resolution
+resolutions = [
+        "7680x4320", "3840x2160", "1920x1080", "1366x768", "1280x720"
+    ]
+
+max_attempts = 50
+# Number of monitors. Same wallpaper will be set on each monitors
+monitors=2
+
+# Nitrogen parameter, One of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
+nitrogen_param = "set-scaled"
+
+  [openrwc.timeout]
+  # s=seconds,m=minutes,h=hours,d=days
+
+  # HTTP call
+  call = "15s"
+  # Wallpaper refresh frequency. Minimum "2s".
+  refresh = "5m"
+  # Retry delay if previous query fails. Minimum "2s".
+  retry = "5s"
