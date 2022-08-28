@@ -4,7 +4,7 @@ version = "0.0.1"
 [reddit]
 subreddits = ["wallpaper", "wallpapers", "Animewallpaper", "AnimeWallpapersSFW", "MinimalWallpaper"]
 # one of (hour, day, week, month, year, all)
-sort = "week"
+sort = "hour"
 # custom query in addition to openrwc.resolution
 query = ""
 
@@ -28,6 +28,6 @@ nitrogen_param = "set-scaled"
   # HTTP call
   call = "15s"
   # Wallpaper refresh frequency. Minimum "2s".
-  refresh = "5m"
+  refresh = "1h"
   # Retry delay if previous query fails. Minimum "2s".
   retry = "5s"

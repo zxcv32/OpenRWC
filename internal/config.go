@@ -56,7 +56,7 @@ version = "0.0.1"
 [reddit]
 subreddits = ["wallpaper", "wallpapers", "Animewallpaper", "AnimeWallpapersSFW", "MinimalWallpaper"]
 # one of (hour, day, week, month, year, all)
-sort = "hour"
+sort = "day"
 # custom query in addition to openrwc.resolution
 query = ""
 
@@ -67,7 +67,7 @@ resolutions = [
 		"7680x4320", "3840x2160", "1920x1080", "1366x768", "1280x720"
 	]
 
-max_attempts = 50
+max_attempts = 10
 # Number of monitors. Same wallpaper will be set on each monitors
 monitors=1
 
