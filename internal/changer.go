@@ -40,14 +40,13 @@ func TimedChanger() {
 		} else {
 			if nil != err && errors.Is(err, &NoWallpaperError{}) {
 				log.Errorln(err.Error())
-
 			} else {
 				fails++
-				// Quicly retry to get another wallpaper
+				// Quickly retry to get another wallpaper
 				time.Sleep(getRetryDelay())
 			}
 		}
-		if fails > getMaxFails() {
+		if fails > getMaxFails() { // Exit the program
 			log.Fatalln("Max fail attempts reached")
 		}
 	}
@@ -73,8 +72,7 @@ func Change() (bool, *NoWallpaperError) {
 				time.Sleep(getRetryDelay())
 				continue
 			}
-			log.Infof("subreddit: %s | %s", subreddit, url)
-			log.Infof("config dir: %s", path)
+			log.Infof("Subreddit: %s | %s", subreddit, url)
 			wallpaper, err := downloader.Download(url, path)
 			if nil != err {
 				log.Errorln(err.Error())
@@ -82,7 +80,6 @@ func Change() (bool, *NoWallpaperError) {
 				time.Sleep(getRetryDelay())
 				continue
 			}
-			log.Infof("wallpaper to set: %s", wallpaper)
 			nitrogenError := NitrogenChange(wallpaper)
 			if nil != nitrogenError {
 				log.Errorf("nitrogen error: %s", nitrogenError.Error())

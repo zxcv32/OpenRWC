@@ -28,7 +28,7 @@ func NitrogenChange(wallpaper string) error {
 		if nil != err {
 			return err
 		}
-		log.Infof("Nitrogen wallpaper applied to monitor: %d\n", i)
+		log.Infof("Nitrogen wallpaper applied to monitor: %d", i)
 	}
 	return nil
 }

@@ -13,6 +13,7 @@ package pkg
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -24,18 +25,25 @@ import (
 // Download image from the given URL to the specified path and return the downloaded file or error/
 func Download(url string, path string) (string, error) {
 	client := &http.Client{} // create a basic downloader client
-	resp, err := client.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if nil != err {
+		log.Error(err)
+		return "", err
+	}
+	req.Header = http.Header{
+		"User-Agent": {"OpenRWC - Go"},
+	}
+	resp, err := client.Do(req)
 	if nil != err {
 		log.Error(err)
 		return "", err
 	}
 	if resp.StatusCode != 200 {
-		return "", errors.New("received non 200 response code")
+		return "", errors.New(fmt.Sprintf("Received %d HTTP response code from Reddit API", resp.StatusCode))
 	}
 	defer resp.Body.Close()
 	components := strings.Split(url, "i.redd.it/")
 	file := path + "/" + components[len(components)-1]
-	log.Infof("Download path: %s", file)
 	stat, err := os.Stat(file)
 	if errors.Is(err, os.ErrNotExist) {
 		if strings.HasSuffix(file, ".png") || strings.HasSuffix(file, ".jpg") || strings.HasSuffix(file, ".jpeg") {
@@ -52,7 +60,6 @@ func Download(url string, path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	defer newFile.Close()
 	//Write the bytes to the file
 	_, err = io.Copy(newFile, resp.Body)

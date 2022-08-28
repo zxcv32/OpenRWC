@@ -20,7 +20,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// HTTP client to query and download wallpapers from Reddit
+// HTTP client to query wallpapers from Reddit
 func TheClientShallIhave() *http.Client {
 	var client *http.Client
 	if nil == client {

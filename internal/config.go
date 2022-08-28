@@ -47,6 +47,7 @@ func setupViper(dir string, file string, format string) {
 	viper.SetConfigType(format)
 }
 
+// Create a new config file at the default path if it does not exists. Returns config path and file
 func createDefaultConfig() (string, string) {
 
 	template := `
@@ -99,6 +100,7 @@ nitrogen_param = "set-scaled"
 		if writeError != nil {
 			log.Fatal(writeError)
 		}
+		log.Infof("Config %s file created at %s", file, path)
 	}
 	return path, file
 }

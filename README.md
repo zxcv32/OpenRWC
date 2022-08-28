@@ -2,12 +2,16 @@
 
 Reddit Wallpaper Changer for GNU/Linux
 
-> Check `legacy` tag for a working prototype
+### Development
+```
+go run cmd/main.go 
+```
 
-### Install
-This will install the requirements too
+### Install System Pacakge
+1. Download the latest [release](https://github.com/zxcV32/OpenRWC/releases)
+1. Install the package. This will prompt to install the [requirements](#requirements) too 
 ```bash
-sudo dpkg -i build/openrwc-amd64.deb
+sudo dpkg -i openrwc-amd64.deb
 ```
 
 ### Requirements

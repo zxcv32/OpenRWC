@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -28,7 +29,7 @@ func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort s
 		return "", err
 	}
 	req.Header = http.Header{
-		"User-Agent": {"OpenRWC/v0.0.1 - Go"},
+		"User-Agent": {"OpenRWC - Go"},
 	}
 	q := req.URL.Query()
 	q.Add("q", query)
@@ -52,6 +53,22 @@ func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort s
 			log.Errorln("Reddit API did not respond with a wallpaper URL")
 		}
 	}()
-	url := js.(map[string]interface{})["data"].(map[string]interface{})["children"].([]interface{})[0].(map[string]interface{})["data"].(map[string]interface{})["url"]
-	return url.(string), nil
+	possibleUrl := js.(map[string]interface{})["data"].(map[string]interface{})["children"].([]interface{})[0].(map[string]interface{})["data"].(map[string]interface{})["url"]
+	validationError := validateWallpaperUrl(possibleUrl.(string))
+	if nil != validationError {
+		return "", validationError
+	}
+	return possibleUrl.(string), nil
+}
+
+// Try to figure out if the URL possibly points to a wallpaper
+func validateWallpaperUrl(possibleUrl string) error {
+	errMsg := fmt.Sprintf("Not a wallpaper URL: %s", possibleUrl)
+	slashes := strings.Count(possibleUrl, "/")
+	if strings.HasSuffix(possibleUrl, "/") {
+		return errors.New(errMsg)
+	} else if slashes != 3 {
+		return errors.New(errMsg)
+	}
+	return nil
 }
