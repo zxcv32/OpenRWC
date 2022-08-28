@@ -20,15 +20,13 @@ import (
 )
 
 // Set wallpaper on monitor(s)
-func NitrogenChange(wallpaper string) error {
-	monitors := viper.GetInt("openrwc.monitors")
-	for i := 0; i < monitors; i++ {
-		_, err := exec.Command("nitrogen", "--"+viper.GetString("openrwc.nitrogen_param"),
-			wallpaper, fmt.Sprintf("--head=%d", i)).Output()
-		if nil != err {
-			return err
-		}
-		log.Infof("Nitrogen wallpaper applied to monitor: %d\n", i)
+func FehChange(wallpaper string) error {
+	output, err := exec.Command("feh", "--"+viper.GetString("openrwc.feh_bg_setting"),
+		wallpaper).Output()
+	fmt.Println("Output: " + string(output))
+	if nil != err {
+		return err
 	}
+	log.Infof("Feh wallpaper applied to all monitors")
 	return nil
 }

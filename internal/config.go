@@ -67,12 +67,10 @@ resolutions = [
 		"7680x4320", "3840x2160", "1920x1080", "1366x768", "1280x720"
 	]
 
-max_attempts = 50
-# Number of monitors. Same wallpaper will be set on each monitors
-monitors=1
+max_attempts = 10
 
-# Nitrogen parameter, One of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
-nitrogen_param = "set-scaled"
+# Feh background setting. One of ("bg-center", "bg-fill", "bg-max", "bg-scale", "bg-tile" , "bg-tile")
+feh_bg_setting = "bg-fill"
 
 	[openrwc.timeout]
 	# s=seconds,m=minutes,h=hours,d=days

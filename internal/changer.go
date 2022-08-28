@@ -22,7 +22,7 @@ import (
 	reddit "github.com/zxcv32/openrwc/pkg"
 )
 
-// Thrown when no wallpaper is set by nitrogen
+// Thrown when no wallpaper is set by the wallpaper setting utility
 type NoWallpaperError struct{}
 
 func (m *NoWallpaperError) Error() string {
@@ -83,9 +83,9 @@ func Change() (bool, *NoWallpaperError) {
 				continue
 			}
 			log.Infof("wallpaper to set: %s", wallpaper)
-			nitrogenError := NitrogenChange(wallpaper)
-			if nil != nitrogenError {
-				log.Errorf("nitrogen error: %s", nitrogenError.Error())
+			wallpaperError := FehChange(wallpaper)
+			if nil != wallpaperError {
+				log.Errorf("Wallpaper change error: %s", wallpaperError.Error())
 				// Just wait for next iteration if no wallpaper was set
 				time.Sleep(getRetryDelay())
 				continue

@@ -12,5 +12,5 @@ sudo dpkg -i build/openrwc-amd64.deb
 
 ### Requirements
 ```shell
-nitrogen
+feh
 ```
