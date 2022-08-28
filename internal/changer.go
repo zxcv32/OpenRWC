@@ -59,21 +59,21 @@ func Change() (bool, *NoWallpaperError) {
 		for _, resolution := range getResolutions() {
 			path = LoadConfig() // refresh config every time
 			searchQuery := strings.Trim(strings.Join([]string{resolution, getQuery()}, " "), " ")
-			url, err := reddit.GetWallpaperUrl(TheClientShallIhave(), subreddit, searchQuery, getSort())
+			urls, err := reddit.GetWallpaperUrl(TheClientShallIhave(), subreddit, searchQuery, getSort())
 			if nil != err {
 				log.Errorln(err.Error())
 				// Just wait for next iteration if no wallpaper was set
 				time.Sleep(getRetryDelay())
 				continue
 			}
-			if len(url) < 1 {
+			if len(urls) < 1 {
 				// No wallpaper URL
 				// Just wait for next iteration if no wallpaper was set
 				time.Sleep(getRetryDelay())
 				continue
 			}
-			log.Infof("Subreddit: %s | %s", subreddit, url)
-			wallpaper, err := downloader.Download(url, path)
+			wallpaper, err := downloader.Download(urls, path)
+			log.Infof("Subreddit: %s | Wallpaper: %s", subreddit, wallpaper)
 			if nil != err {
 				log.Errorln(err.Error())
 				// Just wait for next iteration if no wallpaper was set

@@ -23,10 +23,10 @@ import (
 )
 
 // Fetch wallpaper URL from reddit
-func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort string) (string, error) {
+func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort string) ([]string, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("https://www.reddit.com/r/%s/search.json", subreddit), nil)
 	if nil != err {
-		return "", err
+		return []string{}, err
 	}
 	req.Header = http.Header{
 		"User-Agent": {"OpenRWC - Go"},
@@ -37,15 +37,15 @@ func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort s
 	req.URL.RawQuery = q.Encode()
 	resp, err := client.Do(req)
 	if nil != err {
-		return "", err
+		return []string{}, err
 	}
 	if resp.StatusCode != http.StatusOK {
-		return "", errors.New(fmt.Sprintf("Reddit API responded with error respnse status: %d", resp.StatusCode))
+		return []string{}, errors.New(fmt.Sprintf("Reddit API responded with error respnse status: %d", resp.StatusCode))
 	}
 	var js interface{}
 	apiResponse, _ := io.ReadAll(resp.Body)
 	if err := json.Unmarshal(apiResponse, &js); err != nil {
-		return "", err
+		return []string{}, err
 	}
 	defer func() { // Handle panic if API responds with unexpected JSON response
 		resp.Body.Close()
@@ -53,12 +53,19 @@ func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort s
 			log.Errorln("Reddit API did not respond with a wallpaper URL")
 		}
 	}()
-	possibleUrl := js.(map[string]interface{})["data"].(map[string]interface{})["children"].([]interface{})[0].(map[string]interface{})["data"].(map[string]interface{})["url"]
-	validationError := validateWallpaperUrl(possibleUrl.(string))
-	if nil != validationError {
-		return "", validationError
+	urls := make([]string, 0)
+	children := js.(map[string]interface{})["data"].(map[string]interface{})["children"].([]interface{})
+	if nil != children {
+		for _, child := range children {
+			possibleUrl := child.(map[string]interface{})["data"].(map[string]interface{})["url"]
+			validationError := validateWallpaperUrl(possibleUrl.(string))
+			if nil != validationError {
+				log.Errorln(validationError)
+			}
+			urls = append(urls, possibleUrl.(string))
+		}
 	}
-	return possibleUrl.(string), nil
+	return urls, nil
 }
 
 // Try to figure out if the URL possibly points to a wallpaper
