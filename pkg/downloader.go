@@ -54,8 +54,7 @@ func Download(urls []string, path string) (string, error) {
 			}
 		}
 		if nil != stat && stat.Size() > 0 {
-			// wallpaper previousely set
-			log.Debugf("Wallpaper exists: %s", file)
+			log.Warnf("Wallpaper previousely set: %s", file)
 			continue
 		}
 		newFile, err := os.Create(file)
