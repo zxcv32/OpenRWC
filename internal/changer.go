@@ -13,6 +13,7 @@ package internal
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
@@ -22,14 +23,14 @@ import (
 	reddit "github.com/zxcv32/openrwc/pkg"
 )
 
-// Thrown when no wallpaper is set by nitrogen
+// NoWallpaperError Thrown when no wallpaper is set by software
 type NoWallpaperError struct{}
 
 func (m *NoWallpaperError) Error() string {
 	return "No wallpaper to change"
 }
 
-// Changes wallpaper periodically
+// TimedChanger Changes wallpaper periodically
 func TimedChanger() {
 	fails := 0
 	for {
@@ -52,7 +53,7 @@ func TimedChanger() {
 	}
 }
 
-// Fetch and set wallpaper
+// Change Fetch and set wallpaper
 func Change() (bool, *NoWallpaperError) {
 	path := LoadConfig() // Load config
 	for _, subreddit := range getSubreddits() {
@@ -80,10 +81,8 @@ func Change() (bool, *NoWallpaperError) {
 				time.Sleep(getRetryDelay())
 				continue
 			}
-			nitrogenError := NitrogenChange(wallpaper)
-			if nil != nitrogenError {
-				log.Errorf("nitrogen error: %s", nitrogenError.Error())
-				// Just wait for next iteration if no wallpaper was set
+			utilErr := utilSet(path, wallpaper)
+			if nil == utilErr {
 				time.Sleep(getRetryDelay())
 				continue
 			}
@@ -91,6 +90,26 @@ func Change() (bool, *NoWallpaperError) {
 		}
 	}
 	return false, &NoWallpaperError{}
+}
+
+func utilSet(path string, wallpaper string) *NoWallpaperError {
+	var err error
+
+	util := viper.GetString("openrwc.util")
+	switch util {
+	case "nitrogen":
+		err = NitrogenChange(wallpaper)
+	case "kde":
+		err = KdeChange(path, wallpaper)
+	default:
+		fmt.Println("Util unknown:", util)
+	}
+	if nil != err {
+		log.Errorf("Util error: %s", err.Error())
+		// Just wait for next iteration if no wallpaper was set
+		return nil
+	}
+	return &NoWallpaperError{}
 }
 
 // Get config
