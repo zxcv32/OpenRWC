@@ -19,7 +19,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Set wallpaper on monitor(s)
+// NitrogenChange Set wallpaper on monitor(s)
 func NitrogenChange(wallpaper string) error {
 	monitors := viper.GetInt("openrwc.monitors")
 	for i := 0; i < monitors; i++ {

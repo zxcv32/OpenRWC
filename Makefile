@@ -1,4 +1,4 @@
-# Create executable and system pacakge
+# Create executable and system package
 SHELL = bash
 
 # Create executable

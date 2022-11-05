@@ -1,5 +1,5 @@
 title = "OpenRWC Configuration"
-version = "0.0.1"
+version = "0.0.2"
 
 [reddit]
 subreddits = ["wallpaper", "wallpapers", "Animewallpaper", "AnimeWallpapersSFW", "MinimalWallpaper"]
@@ -19,8 +19,13 @@ max_attempts = 50
 # Number of monitors. Same wallpaper will be set on each monitors
 monitors=2
 
-# Nitrogen parameter, One of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
-nitrogen_param = "set-scaled"
+# Software used to set the wallpaper. One of ("nitrogen", "kde")
+util = "kde"
+# Util parameter.
+# Examples:
+# nitrogen: one of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
+# KDE: <Not used>
+util_param = "set-scaled"
 
   [openrwc.timeout]
   # s=seconds,m=minutes,h=hours,d=days

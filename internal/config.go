@@ -18,7 +18,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Load configuration and return the path of config directory
+// LoadConfig Load configuration and return the path of config directory
 func LoadConfig() string {
 	// Load config
 	path := "configs"
@@ -32,7 +32,12 @@ func LoadConfig() string {
 		}
 		return path
 	} else {
-		setupViper(path, file, "toml") // Usuall location in project
+		pwd, pwdErr := os.Getwd()
+		if pwdErr != nil {
+			log.Fatal(pwdErr)
+		}
+		path = pwd + "/" + path
+		setupViper(path, file, "toml") // Usually location in project
 		err := viper.ReadInConfig()
 		if err != nil {
 			log.Fatal(err.Error())
@@ -52,7 +57,7 @@ func createDefaultConfig() (string, string) {
 
 	template := `
 title = "OpenRWC Configuration"
-version = "0.0.1"
+version = "0.0.2"
 
 [reddit]
 subreddits = ["wallpaper", "wallpapers", "Animewallpaper", "AnimeWallpapersSFW", "MinimalWallpaper"]
@@ -72,8 +77,13 @@ max_attempts = 10
 # Number of monitors. Same wallpaper will be set on each monitors
 monitors=1
 
-# Nitrogen parameter, One of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
-nitrogen_param = "set-scaled"
+# Software used to set the wallpaper. One of ("nitrogen", "kde")
+util = "kde"
+# Util parameter.
+# Examples:
+# nitrogen: one of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
+# KDE: <Not used>
+util_param = "set-scaled"
 
 	[openrwc.timeout]
 	# s=seconds,m=minutes,h=hours,d=days
@@ -95,8 +105,8 @@ nitrogen_param = "set-scaled"
 			log.Fatal(openError)
 		}
 		defer f.Close()
-		_, writeError := f.WriteString(template)
-
+		output, writeError := f.WriteString(template)
+		log.Infof(string(output))
 		if writeError != nil {
 			log.Fatal(writeError)
 		}
