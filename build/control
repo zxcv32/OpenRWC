@@ -1,0 +1,8 @@
+Package: openrwc
+Version: ${VERSION}
+Architecture: amd64
+Essential: no
+Priority: optional
+Maintainer: Ashwani Sharma (https://github.com/zxcV32)
+Homepage: https://github.com/zxcV32/OpenRWC
+Description: Reddit Wallpaper Changer for GNU/Linux
