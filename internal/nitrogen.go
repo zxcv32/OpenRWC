@@ -23,7 +23,7 @@ import (
 func NitrogenChange(wallpaper string) error {
 	monitors := viper.GetInt("openrwc.monitors")
 	for i := 0; i < monitors; i++ {
-		_, err := exec.Command("nitrogen", "--"+viper.GetString("openrwc.nitrogen_param"),
+		_, err := exec.Command("nitrogen", "--"+viper.GetString("openrwc.util_param"),
 			wallpaper, fmt.Sprintf("--head=%d", i)).Output()
 		if nil != err {
 			return err
