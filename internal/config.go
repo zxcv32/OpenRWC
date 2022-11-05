@@ -12,6 +12,7 @@
 package internal
 
 import (
+	"fmt"
 	"os"
 
 	log "github.com/sirupsen/logrus"
@@ -21,7 +22,8 @@ import (
 // LoadConfig Load configuration and return the path of config directory
 func LoadConfig() string {
 	// Load config
-	path := "configs"
+	home, _ := os.UserHomeDir()
+	path := home + "/.config/OpenRWC"
 	file := "config"
 	if _, err := os.Stat(path + "/" + file + ".toml"); os.IsNotExist(err) {
 		path, file := createDefaultConfig()
@@ -32,15 +34,20 @@ func LoadConfig() string {
 		}
 		return path
 	} else {
-		pwd, pwdErr := os.Getwd()
-		if pwdErr != nil {
-			log.Fatal(pwdErr)
-		}
-		path = pwd + "/" + path
 		setupViper(path, file, "toml") // Usually location in project
 		err := viper.ReadInConfig()
 		if err != nil {
 			log.Fatal(err.Error())
+		}
+		if viper.GetString("version") != "0.0.2" { // set supported configuration version
+			log.Warnf(fmt.Sprintf("Installed configuration version (\"%s\") is unsupported. It is backed up with `.old` extension!", viper.GetString("version")))
+			old := path + "/" + file + ".toml"
+			backup := path + "/" + file + ".toml.old"
+			err := os.Rename(old, backup)
+			if nil != err {
+				log.Fatal(err)
+			}
+			return LoadConfig()
 		}
 		return path
 	}
@@ -105,8 +112,7 @@ util_param = "set-scaled"
 			log.Fatal(openError)
 		}
 		defer f.Close()
-		output, writeError := f.WriteString(template)
-		log.Infof(string(output))
+		_, writeError := f.WriteString(template)
 		if writeError != nil {
 			log.Fatal(writeError)
 		}
