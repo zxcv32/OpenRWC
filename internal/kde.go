@@ -17,6 +17,7 @@ import (
 )
 
 // KdeChange Set wallpaper on monitor(s)
+// path to the script
 func KdeChange(path string, wallpaper string) error {
 	// https://www.reddit.com/r/kde/comments/65pmhj/change_wallpaper_from_terminal/
 	script := `#!/usr/bin/env sh

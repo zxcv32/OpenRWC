@@ -101,6 +101,8 @@ func utilSet(path string, wallpaper string) *NoWallpaperError {
 		err = NitrogenChange(wallpaper)
 	case "kde":
 		err = KdeChange(path, wallpaper)
+	case "xfce":
+		err = XChange(wallpaper)
 	default:
 		fmt.Println("Util unknown:", util)
 	}

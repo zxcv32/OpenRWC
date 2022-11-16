@@ -84,13 +84,15 @@ max_attempts = 10
 # Number of monitors. Same wallpaper will be set on each monitors
 monitors=1
 
-# Software used to set the wallpaper. One of ("nitrogen", "kde")
-util = "kde"
+# Software used to set the wallpaper. One of ("nitrogen", "kde", "xfce")
+util = "xfce"
 # Util parameter.
-# Examples:
-# nitrogen: one of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
-# KDE: <Not used>
-util_param = "set-scaled"
+#
+# Usage:
+# If util is nitrogen then the value is one of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
+# If util is xfce then the value is one of ("maximize", "stretch", "tile", "zoom")
+# If util is kde then util_param is not used
+util_param = "zoom"
 
 	[openrwc.timeout]
 	# s=seconds,m=minutes,h=hours,d=days
