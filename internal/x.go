@@ -18,7 +18,8 @@ import (
 
 // Set wallpaper on monitor(s)
 func XChange(wallpaper string) error {
-	_, err := exec.Command("xwallpaper", "--"+viper.GetString("openrwc.util_param"), wallpaper).Output()
+	_, err := exec.Command("xwallpaper", "--daemon", "--"+viper.GetString("openrwc.util_param"),
+		wallpaper).Output()
 	if nil != err {
 		return err
 	}
