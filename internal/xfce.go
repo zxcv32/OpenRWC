@@ -18,7 +18,6 @@ import (
 
 // XfceChange Set wallpaper on monitor(s)
 func XfceChange(wallpaper string) error {
-	// Assume xfconf-query is already installed
 	propsArr, err := exec.Command("xfconf-query", "-c", "xfce4-desktop", "-l").Output()
 	if nil != err {
 		return err
