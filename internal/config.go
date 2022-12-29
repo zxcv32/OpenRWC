@@ -39,7 +39,7 @@ func LoadConfig() string {
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		if viper.GetString("version") != "0.0.2" { // set supported configuration version
+		if viper.GetString("version") != "0.0.3" { // set supported configuration version
 			log.Warnf(fmt.Sprintf("Installed configuration version (\"%s\") is unsupported. It is backed up with `.old` extension!", viper.GetString("version")))
 			old := path + "/" + file + ".toml"
 			backup := path + "/" + file + ".toml.old"
@@ -57,14 +57,14 @@ func setupViper(dir string, file string, format string) {
 	viper.AddConfigPath(dir)
 	viper.SetConfigName(file)
 	viper.SetConfigType(format)
+	viper.AutomaticEnv()
 }
 
 // Create a new config file at the default path if it does not exists. Returns config path and file
 func createDefaultConfig() (string, string) {
-
 	template := `
 title = "OpenRWC Configuration"
-version = "0.0.2"
+version = "0.0.3"
 
 [reddit]
 subreddits = ["wallpaper", "wallpapers", "Animewallpaper", "AnimeWallpapersSFW", "MinimalWallpaper"]
@@ -85,7 +85,8 @@ max_attempts = 10
 monitors=1
 
 # Software used to set the wallpaper. One of ("nitrogen", "kde", "x", "xfce")
-util = "xfce"
+# If blank, then OPENRWC_UTIL environment is tried
+util = ""
 # Util parameter.
 #
 # Usage:

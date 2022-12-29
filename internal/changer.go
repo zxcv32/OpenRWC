@@ -13,7 +13,6 @@ package internal
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 
@@ -94,8 +93,11 @@ func Change() (bool, *NoWallpaperError) {
 
 func utilSet(path string, wallpaper string) *NoWallpaperError {
 	var err error
-
 	util := viper.GetString("openrwc.util")
+	if len(util) < 1 {
+		log.Warnln("openrwc.util config parameter empty. Trying OPENRWC_UTIL environment variable")
+		util = viper.GetString("OPENRWC_UTIL")
+	}
 	switch util {
 	case "nitrogen":
 		err = NitrogenChange(wallpaper)
@@ -106,7 +108,9 @@ func utilSet(path string, wallpaper string) *NoWallpaperError {
 	case "xfce":
 		err = XfceChange(wallpaper)
 	default:
-		fmt.Println("Util unknown:", util)
+		log.Fatalln("Util unknown:", util)
+		log.Fatalln("Make sure either openrwc.util config field" +
+			" or OPENRWC_UTIL environment variable is correctly set")
 	}
 	if nil != err {
 		log.Errorf("Util error: %s", err.Error())

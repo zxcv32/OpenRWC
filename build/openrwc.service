@@ -1,0 +1,17 @@
+[Unit]
+Description=Reddit Wallpaper Changer for GNU/Linux
+After=display-manager.service
+StartLimitIntervalSec=0
+
+[Service]
+Environment="DISPLAY=:0.0"
+Environment="XAUTHORITY=%h/.Xauthority"
+Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
+Environment="OPENRWC_UTIL=${OPENRWC_UTIL}"
+Type=simple
+ExecStart=/usr/bin/sh -c "/usr/bin/openrwc"
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
