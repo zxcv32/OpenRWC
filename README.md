@@ -10,28 +10,30 @@ go run cmd/main.go
 ## Build
 To create a release follow the instructions
 1. Set `Version` value in `Makefile`
-1. Run `make` to build executable and package using `Makefile` from the project root
+2Run `make` to build executable and package using `Makefile` from the project root
 
-### Install System Pacakge
+### Install System Package
 1. Download the latest [release](https://github.com/zxcV32/OpenRWC/releases)
+2. Install the relevant package depending upon your DE or WM
+   ```shell
+   sudo --preserve-env=HOME,USER dpkg -i build/openrwc-kde-amd64.deb
+   sudo --preserve-env=HOME,USER dpkg -i build/openrwc-nitrogen-amd64.deb
+   sudo --preserve-env=HOME,USER dpkg -i build/openrwc-x-amd64.deb
+   sudo --preserve-env=HOME,USER dpkg -i build/openrwc-xfce-amd64.deb
+   ```
 
-#### KDE
-```bash
-sudo dpkg -i openrwc-kde-amd64.deb
+### Enable & Start Systemd Service
+```shell
+systemctl --user enable openrwc.service
+systemctl --user start openrwc.service
 ```
-
-#### Nitrogen
-1. Install required dependencies and package
-```bash
-sudo apt install nitrogen -y
-sudo dpkg -i openrwc-nitrogen-amd64.deb
-```
-
-### Enable Systemd Service
-`sudo systemctl enable openrwc@$USER.service`
-
-### Start Systemd Service
-`sudo systemctl start openrwc@$USER.service`
 
 ### See Service Logs
-`journalctl -fu openrwc@$USER.service`
+```shell
+journalctl -f --user-unit openrwc.service
+```
+
+### Additional Info
+1. Configuration file will be created after the first run at `~/.config/OpenRWC/config.toml`
+2. Wallpapers are downloaded at `~/.config/OpenRWC/`
+3. Systemd Service is created in the user's home directory: `~/.config/systemd/user/openrwc.service`

@@ -84,7 +84,7 @@ max_attempts = 10
 # Number of monitors. Same wallpaper will be set on each monitors
 monitors=1
 
-# Software used to set the wallpaper. One of ("nitrogen", "kde", "xfce")
+# Software used to set the wallpaper. One of ("nitrogen", "kde", "x", "xfce")
 util = "xfce"
 # Util parameter.
 #
