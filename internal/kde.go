@@ -17,6 +17,7 @@ import (
 )
 
 // KdeChange Set wallpaper on monitor(s)
+// path to the script
 func KdeChange(path string, wallpaper string) error {
 	// https://www.reddit.com/r/kde/comments/65pmhj/change_wallpaper_from_terminal/
 	script := `#!/usr/bin/env sh
@@ -28,8 +29,7 @@ qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "var a
                                                                                                             \"org.kde.image\",
                                                                                                             \"General\");
                                                                                d.writeConfig(\"Image\", \"$1\")
-                                                                           }}
-"
+                                                                           }}"
 `
 	file := "kde.sh"
 	if _, err := os.Stat(path + "/" + file); os.IsNotExist(err) {

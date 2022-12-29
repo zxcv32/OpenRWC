@@ -39,7 +39,7 @@ func LoadConfig() string {
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		if viper.GetString("version") != "0.0.2" { // set supported configuration version
+		if viper.GetString("version") != "0.0.3" { // set supported configuration version
 			log.Warnf(fmt.Sprintf("Installed configuration version (\"%s\") is unsupported. It is backed up with `.old` extension!", viper.GetString("version")))
 			old := path + "/" + file + ".toml"
 			backup := path + "/" + file + ".toml.old"
@@ -57,14 +57,14 @@ func setupViper(dir string, file string, format string) {
 	viper.AddConfigPath(dir)
 	viper.SetConfigName(file)
 	viper.SetConfigType(format)
+	viper.AutomaticEnv()
 }
 
 // Create a new config file at the default path if it does not exists. Returns config path and file
 func createDefaultConfig() (string, string) {
-
 	template := `
 title = "OpenRWC Configuration"
-version = "0.0.2"
+version = "0.0.3"
 
 [reddit]
 subreddits = ["wallpaper", "wallpapers", "Animewallpaper", "AnimeWallpapersSFW", "MinimalWallpaper"]
@@ -84,13 +84,16 @@ max_attempts = 10
 # Number of monitors. Same wallpaper will be set on each monitors
 monitors=1
 
-# Software used to set the wallpaper. One of ("nitrogen", "kde")
-util = "kde"
+# Software used to set the wallpaper. One of ("nitrogen", "kde", "x", "xfce")
+# If blank, then OPENRWC_UTIL environment is tried
+util = ""
 # Util parameter.
-# Examples:
-# nitrogen: one of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
-# KDE: <Not used>
-util_param = "set-scaled"
+#
+# Usage:
+# If util is nitrogen then the value is one of ("set-auto", "set-centered", "set-scaled", "set-tiled", "set-zoom" , "set-zoom-fill")
+# If util is xfce then the value is one of ("maximize", "stretch", "tile", "zoom")
+# If util is kde then util_param is not used
+util_param = "zoom"
 
 	[openrwc.timeout]
 	# s=seconds,m=minutes,h=hours,d=days
@@ -98,10 +101,10 @@ util_param = "set-scaled"
 	# HTTP call
 	call = "15s"
 	# Wallpaper refresh frequency. Minimum "2s".
-	refresh = "1h"
+	refresh = "2h"
 	# Retry delay if previous query fails. Minimum "2s".
 	retry = "5s"
-	`
+`
 	file := "config"
 	home, _ := os.UserHomeDir()
 	path := home + "/.config/OpenRWC"

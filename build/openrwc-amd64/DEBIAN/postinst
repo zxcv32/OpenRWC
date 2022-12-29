@@ -1,14 +1,21 @@
 #!/bin/env bash
+
+mkdir -p ~/.config/systemd/user
+cp /usr/lib/openrwc/openrwc.service ~/.config/systemd/user/
+
+chown -R "$USER":"$USER" ~/.config/systemd/
+
 systemctl daemon-reload
+
 echo "
 OpenRWC Installed 🧞
 
 Run the following commands to begin
 "
 
-echo -e "\tsudo systemctl enable openrwc@\044USER.service"
-echo -e "\tsudo systemctl start openrwc@\044USER.service"
+echo -e "\tsystemctl --user enable openrwc.service"
+echo -e "\tsystemctl --user start openrwc.service"
 
-echo "
-Configuration file will be created here: ~/.config/OpenRWC/config.toml
-"
+echo -e "\tjournalctl -f --user-unit openrwc.service # To view service logs\n"
+
+echo -e "\nConfiguration file will be created in the user's home directory: ~/.config/OpenRWC/config.toml"
