@@ -26,7 +26,7 @@ default:
 
 	envsubst < build/control > build/openrwc-amd64/DEBIAN/control
 	OPENRWC_UTIL="xfce" envsubst < build/openrwc.service > build/openrwc-amd64/usr/lib/openrwc/openrwc.service
-	echo "Depends: xfconf (>=4.18)" >> build/openrwc-amd64/DEBIAN/control
+	echo "Depends: xfconf (>=4.18.0-1)" >> build/openrwc-amd64/DEBIAN/control
 	dpkg-deb --build build/openrwc-amd64
 	mv build/openrwc-amd64.deb build/openrwc-xfce-amd64.deb
 
