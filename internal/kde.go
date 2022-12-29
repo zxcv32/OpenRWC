@@ -29,8 +29,7 @@ qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "var a
                                                                                                             \"org.kde.image\",
                                                                                                             \"General\");
                                                                                d.writeConfig(\"Image\", \"$1\")
-                                                                           }}
-"
+                                                                           }}"
 `
 	file := "kde.sh"
 	if _, err := os.Stat(path + "/" + file); os.IsNotExist(err) {

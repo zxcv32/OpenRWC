@@ -40,7 +40,8 @@ func GetWallpaperUrl(client *http.Client, subreddit string, query string, sort s
 		return []string{}, err
 	}
 	if resp.StatusCode != http.StatusOK {
-		return []string{}, errors.New(fmt.Sprintf("Reddit API responded with error respnse status: %d", resp.StatusCode))
+		return []string{}, errors.New(fmt.Sprintf(
+			"Reddit API responded with error response status: %d", resp.StatusCode))
 	}
 	var js interface{}
 	apiResponse, _ := io.ReadAll(resp.Body)

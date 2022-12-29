@@ -100,10 +100,10 @@ util_param = "zoom"
 	# HTTP call
 	call = "15s"
 	# Wallpaper refresh frequency. Minimum "2s".
-	refresh = "1h"
+	refresh = "2h"
 	# Retry delay if previous query fails. Minimum "2s".
 	retry = "5s"
-	`
+`
 	file := "config"
 	home, _ := os.UserHomeDir()
 	path := home + "/.config/OpenRWC"
