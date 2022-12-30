@@ -1,7 +1,7 @@
 # Create executable and system package
 SHELL = bash
 
-default: export VERSION=0.0.4
+default: export VERSION=0.0.5
 
 # Create executable and system package
 default:
