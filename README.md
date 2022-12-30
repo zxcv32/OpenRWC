@@ -2,17 +2,7 @@
 
 Reddit Wallpaper Changer for GNU/Linux
 
-### Development
-```
-go run cmd/main.go 
-```
-
-## Build
-To create a release follow the instructions
-1. Set `Version` value in `Makefile`
-2Run `make` to build executable and package using `Makefile` from the project root
-
-### Install System Package
+## Install System Package
 1. Download the latest [release](https://github.com/zxcV32/OpenRWC/releases)
 2. Install the relevant package depending upon your DE or WM
    ```shell
@@ -22,16 +12,26 @@ To create a release follow the instructions
    sudo --preserve-env=HOME,USER dpkg -i build/openrwc-xfce-amd64.deb
    ```
 
-### Enable & Start Systemd Service
+## Enable & Start Systemd Service
 ```shell
 systemctl --user enable openrwc.service
 systemctl --user start openrwc.service
 ```
 
-### See Service Logs
+## See Service Logs
 ```shell
 journalctl -f --user-unit openrwc.service
 ```
+
+## Development
+```
+go run cmd/main.go 
+```
+
+## Build
+To create a release follow the instructions
+1. Set `Version` value in `Makefile`
+2. Run `make` to build executable and package using `Makefile` from the project root
 
 ### Additional Info
 1. Configuration file will be created after the first run at `~/.config/OpenRWC/config.toml`
